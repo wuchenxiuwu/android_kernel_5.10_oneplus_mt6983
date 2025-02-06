@@ -250,4 +250,13 @@ config BLK_MQ_RDMA
 config BLK_PM
 	def_bool BLOCK && PM
 
+config BLOCKIO_UX_OPT
+	bool
+	default y
+	help
+	  Enable Zero block io support for the kernel
+	  Zero-blockio will set the verification of ux bio to kveritydX to
+	  optimize the runnable problem caused by kverityd, and protect the
+	  dm-buf cache when available memory is sufficient
+
 source "block/Kconfig.iosched"

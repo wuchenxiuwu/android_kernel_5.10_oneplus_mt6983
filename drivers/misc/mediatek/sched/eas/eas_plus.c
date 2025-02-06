@@ -748,6 +748,9 @@ void mtk_select_task_rq_rt(void *data, struct task_struct *p, int source_cpu,
 #if IS_ENABLED(CONFIG_OPLUS_FEATURE_FRAME_BOOST)
 				&& (fbg_rt_task_fits_capacity(p, cpu))
 #endif
+#if IS_ENABLED(CONFIG_OPLUS_FEATURE_SCHED_ASSIST)
+				&& !sa_rt_skip_ux_cpu(cpu)
+#endif
 				) {
 			lowest_prio = curr->prio;
 			lowest_cpu = cpu;

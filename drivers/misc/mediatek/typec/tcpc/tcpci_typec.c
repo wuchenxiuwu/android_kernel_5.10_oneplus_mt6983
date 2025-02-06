@@ -1632,8 +1632,8 @@ static inline void typec_attach_wait_entry(struct tcpc_device *tcpc)
 		tcpc_reset_typec_debounce_timer(tcpc);
 		TYPEC_DBG("Attached, Ignore cc_attach\n");
 #ifdef OPLUS_FEATURE_CHG_BASIC
-		tcpci_get_chip_vid(tcpc, &chip_vid);
-		if(SOUTHCHIP_PD_VID != chip_vid)
+		rv = tcpci_get_chip_vid(tcpc, &chip_vid);
+		if(!rv && SOUTHCHIP_PD_VID != chip_vid)
 			typec_enable_vconn(tcpc);
 #else
 		typec_enable_vconn(tcpc);

@@ -181,7 +181,6 @@ static struct imgsensor_info_struct imgsensor_info = {
     .ae_shut_delay_frame = 0,        //check
     .ae_sensor_gain_delay_frame = 0,//check
     .ae_ispGain_delay_frame = 2,
-	.frame_time_delay_frame = 1,
     .ihdr_support = 0,
     .ihdr_le_firstline = 0,
     .sensor_mode_num = 8,            //support sensor mode num
@@ -194,7 +193,7 @@ static struct imgsensor_info_struct imgsensor_info = {
     .custom1_delay_frame = 3,        //enter custom1 delay frame num
     .custom2_delay_frame = 3,        //enter custom2 delay frame num
     .custom3_delay_frame = 3,        //enter custom3 delay frame num
-    .frame_time_delay_frame = 2,
+    .frame_time_delay_frame = 1,
 
     .isp_driving_current = ISP_DRIVING_4MA,
     .sensor_interface_type = SENSOR_INTERFACE_TYPE_MIPI,
@@ -823,6 +822,8 @@ static void read_ov50d40_module_data()
     kal_uint32 lensAddr = 0x08;
     kal_uint32 macAddr = 0x44;
     kal_uint32 infAddr = 0x46;
+    kal_uint32 moduleAddr = 0x00;
+    kal_uint32 sensorAddr = 0x06;
 
     memset(ov50d40_common_data, 0, sizeof(ov50d40_common_data));
     // QR
@@ -830,12 +831,24 @@ static void read_ov50d40_module_data()
     {
        ov50d40_common_data[8 + idx] = read_ov50d40_eeprom_module(sn_starAddr + idx);
     }
+    //module id for arcore
+    ov50d40_common_data[0] = read_ov50d40_eeprom_module(moduleAddr);
+    ov50d40_common_data[1] = read_ov50d40_eeprom_module(moduleAddr + 1);
+    //sensor id for arcore
+    ov50d40_common_data[2] = read_ov50d40_eeprom_module(sensorAddr);
+    ov50d40_common_data[3] = read_ov50d40_eeprom_module(sensorAddr + 1);
     // Vcm ID
     ov50d40_common_data[40] = read_ov50d40_eeprom_module(vcmAddr);
     ov50d40_common_data[41] = read_ov50d40_eeprom_module(vcmAddr + 1);
     // Lens ID
     ov50d40_common_data[44] = read_ov50d40_eeprom_module(lensAddr);
     ov50d40_common_data[45] = read_ov50d40_eeprom_module(lensAddr + 1);
+    // Vcm ID for arcore
+    ov50d40_common_data[6] = read_ov50d40_eeprom_module(vcmAddr);
+    ov50d40_common_data[7] = read_ov50d40_eeprom_module(vcmAddr + 1);
+    // Lens ID for arcore
+    ov50d40_common_data[4] = read_ov50d40_eeprom_module(lensAddr);
+    ov50d40_common_data[5] = read_ov50d40_eeprom_module(lensAddr + 1);
     // Macro
     ov50d40_common_data[48] = read_ov50d40_eeprom_module(macAddr);
     ov50d40_common_data[49] = read_ov50d40_eeprom_module(macAddr + 1);

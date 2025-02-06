@@ -801,7 +801,13 @@ static int panel_hbm_set_cmdq(struct drm_panel *panel, void *dsi,
 	}
 
 	if (!en) {
-		flag_hbm = 0;
+		if (level <= 2047) {
+			flag_hbm = 0;
+			hbm_cmd[5].para_list[1] = 0x20;
+		} else if (level > 2047 && level <= 4095) {
+			flag_hbm = 1;
+			hbm_cmd[5].para_list[1] = 0xE0;
+		}
 		hbm_cmd[6].para_list[1] = level >> 8;
 		hbm_cmd[6].para_list[2] = level & 0xFF;
 	}

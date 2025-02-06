@@ -406,8 +406,10 @@ static void set_shutter_frame_length(kal_uint16 shutter,
 		} else {
 			imgsensor.frame_length = (imgsensor.frame_length  >> 1) << 1;
 			write_cmos_sensor(0xfd, 0x01);
+			spin_lock(&imgsensor_drv_lock);
 			write_cmos_sensor(0x05, ((imgsensor.frame_length - imgsensor.diff_frame_length)*2 >> 8) & 0xFF);
 			write_cmos_sensor(0x06, (imgsensor.frame_length - imgsensor.diff_frame_length)*2 & 0xFF);
+			spin_unlock(&imgsensor_drv_lock);
 			write_cmos_sensor(0xfd, 0x01);	//page1
 			write_cmos_sensor(0x01, 0x01);	//fresh
 		}
@@ -2249,7 +2251,8 @@ static kal_uint32 set_max_framerate_by_scenario(enum MSDK_SCENARIO_ID_ENUM scena
 		imgsensor.min_frame_length = imgsensor.frame_length;
 		spin_unlock(&imgsensor_drv_lock);
 		if (imgsensor.frame_length > imgsensor.shutter)
-		set_dummy();
+			set_dummy();
+		break;
 	case MSDK_SCENARIO_ID_CUSTOM2:
 		if (imgsensor.current_fps != imgsensor_info.custom2.max_framerate)
 		LOG_INF("Warning: current_fps %d fps is not support, so use cap's setting: %d fps!\n",framerate,imgsensor_info.custom2.max_framerate/10);

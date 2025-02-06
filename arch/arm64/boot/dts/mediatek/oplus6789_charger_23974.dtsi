@@ -341,6 +341,7 @@
 		interrupt-parent = <&pio>;
 		interrupts = <12 0>;
 		ocp_reg = <0xa>;
+		ovp_reg = <0x36>;
 
 		pinctrl-names = "switch1_act_switch2_act", "switch1_sleep_switch2_sleep",
 					"charging_inter_active", "charging_inter_sleep";

@@ -244,13 +244,13 @@ static int get_gpio_value(struct device_node *np, int *gpio_value)
     return 0;
 }
 
-static int create_chipset_file_and_symlinks(struct id_entry entry)
+static int create_chipset_file_and_symlinks(struct id_entry *entry)
 {
     struct proc_dir_entry *p_entry;
     static struct proc_dir_entry *nfc_info = NULL;
 
-    pr_info("%s, entry.chipset:%s entry.manifest_path:%s entry.feature_path:%s", __func__,
-        entry.chipset, entry.manifest_path, entry.feature_path);
+    pr_info("%s, entry->chipset:%s entry->manifest_path:%s entry->feature_path:%s", __func__,
+        entry->chipset, entry->manifest_path, entry->feature_path);
 
     nfc_info = proc_mkdir("oplus_nfc", NULL);
 
@@ -261,11 +261,11 @@ static int create_chipset_file_and_symlinks(struct id_entry entry)
         return -ENOENT;
     }
 
-    if (strcmp("none", entry.chipset) != 0)
+    if (strcmp("none", entry->chipset) != 0)
     {
         //nfc chip exist
         support_nfc = true;
-        strncpy(current_chipset, entry.chipset, sizeof(current_chipset) - 1);
+        strncpy(current_chipset, entry->chipset, sizeof(current_chipset) - 1);
         p_entry = proc_create_data("chipset", S_IRUGO, nfc_info, &nfc_info_fops, (uint32_t *)(NFC_CHIPSET_VERSION));
 
         if (!p_entry)
@@ -280,8 +280,8 @@ static int create_chipset_file_and_symlinks(struct id_entry entry)
         pr_info("%s, there is no nfc chip", __func__);
     }
 
-    proc_symlink("manifest", nfc_info , entry.manifest_path);
-    proc_symlink("feature", nfc_info , entry.feature_path);
+    proc_symlink("manifest", nfc_info , entry->manifest_path);
+    proc_symlink("feature", nfc_info , entry->feature_path);
     pr_info("%s, create_chipset_file_and_symlinks success", __func__);
     return 0;
 }
@@ -337,7 +337,7 @@ static int mixed_nfc_probe(struct platform_device *pdev)
 
     for (i = 0; i < id_count; i++) {
         if (id_entries[i].key == gpio_value) {
-            err = create_chipset_file_and_symlinks(id_entries[i]);
+            err = create_chipset_file_and_symlinks(&id_entries[i]);
             if (err)
             {
               pr_err("%s error:create_chipset_file_and_symlinks failed", __func__);

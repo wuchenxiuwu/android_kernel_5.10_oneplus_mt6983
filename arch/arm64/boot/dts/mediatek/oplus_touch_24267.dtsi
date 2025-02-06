@@ -78,7 +78,7 @@
         prevention,makeup_cnt_weight = <4 1 2 2 2>;
         prevention,large_corner_range = <960 2400>;
         prevention,large_corner_judge_condition = <500 300 800 7 7>;
-        prevention,trx_reject_condition = <8 6 7>;
+        prevention,trx_reject_condition = <9 6 7>;
         prevention,trx_strict_reject_condition = <8 5 6>;
         prevention,large_judge_time_ms = <500 50 30>;
         prevention,large_exit_condition = <8 8 2>;

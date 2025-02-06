@@ -356,6 +356,7 @@
 		pinctrl-3 = <&charging_inter_sleep>;
 
 		qcom,charging_switch1-gpio = <&pio 155 0x00>;
+		ovp_reg = <0x36>;
 		qcom,copycat_vooc_support;
 
 		qcom,voocphy_current_default = <30>;

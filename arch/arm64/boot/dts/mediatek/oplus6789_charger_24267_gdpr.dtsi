@@ -56,7 +56,7 @@
 	mediatek,eye-term-host = <1>;
 	mediatek,rev6-host = <2>;
 	mediatek,discth = <9>;
-	mediatek,rx-sqth = <5>;
+	mediatek,rx_sqth = <2>;
 };
 
 &uart0 {
@@ -145,7 +145,7 @@
 	qcom,recharge-mv = <100>;
 	qcom,batt_capacity_mah = <5800>;/*typical capacity*/
 
-	qcom,removed_bat_decidegc = <190>;  /*<-19C*/
+	qcom,removed_bat_decidegc = <390>;  /*<-19C*/
 
 	qcom,cold_bat_decidegc = <100>;  /*-10C~0C*/
 	qcom,temp_cold_vfloat_mv = <4490>;
@@ -240,7 +240,7 @@
 	qcom,chg_ctrl_by_calling;
 	qcom,support_ntc_01c_precision;
 	qcom,sw_vfloat_over_protect_enable;
-	qcom,voocphy_support_display_vooc;
+	voocphy_support_display_vooc;
 
 	qcom,normal_vterm_hw_inc = <18>;
 	qcom,non_normal_vterm_hw_inc = <18>;
@@ -322,7 +322,6 @@
 	qcom,ccdetect-gpio = <&pio 3 0x00>;
 
 /* Feature avoid battery swelling caused by high temp */
-	oplus,support_hot_enter_kpoc;
 	oplus,poweroff_high_batt_temp = <720>;
 	oplus,poweroff_emergency_batt_temp = <770>;
 	oplus,usbtemp_batt_temp_over_hot = <60>;
@@ -431,6 +430,7 @@
 		qcom,vooc_cool_down_current_limit = <30 20 20 24 30>;
 		qcom,abnormal_adapter_current = <60 60 40 40>;
 
+		qcom,fastchg_timeout_time_init = <145020>;
 		qcom,vooc_little_cold_full_voltage = <4490>;
 		qcom,vooc_cool_full_voltage = <4490>;
 		qcom,vooc_warm_full_voltage = <4130>;
@@ -497,9 +497,9 @@
 		qcom,batt_pwd_curr_thd1 = <4300>;
 		qcom,batt_pwd_vol_thd1 = <4514>;
 
-		qcom,voocphy_freq_mincore = <999000>;
-		qcom,voocphy_freq_midcore = <1443000>;
-		qcom,voocphy_freq_maxcore = <1443000>;
+		qcom,voocphy_freq_mincore = <1113600>;
+		qcom,voocphy_freq_midcore = <1804800>;
+		qcom,voocphy_freq_maxcore = <1804800>;
 		qcom,voocphy_current_change_timeout = <100>;
 
 		svooc_batt_sys_curve = <0 1 0 1 0 0 1	// 4100mA
@@ -528,9 +528,8 @@
 								 4480 18 0 0 0
 								 4480 15 0 0 0
 								 4490 10 1 0 0>;
-				strategy_temp_little_cool = 	<4230 41 0 0 0 /* 12-21 */
-								 4230 40 0 0 0
-								 4230 35 0 0 0
+				strategy_temp_little_cool = 	<4150 40 0 0 0 /* 12-21 */
+								 4150 35 0 0 0
 								 4510 32 0 0 0
 								 4510 30 0 0 0
 								 4510 25 0 0 0
@@ -599,7 +598,7 @@
 				strategy_temp_cool =		<4490 10 1 0 0>;
 				strategy_temp_little_cool =	<4550 10 1 0 0>;
 				strategy_temp_normal_low =	<4550 10 1 0 0>;
-				strategy_temp_normal_high =	<4550 10 1 0 0>;
+				strategy_temp_normal_high =	<4550 12 1 0 0>;
 				strategy_temp_warm =		<4130 10 1 0 0>;//no fastcharge
 			};
 		};
@@ -651,7 +650,7 @@
 				strategy_temp_cool =		<4490 20 1 0 0>;
 				strategy_temp_little_cool =	<4550 20 1 0 0>;
 				strategy_temp_normal_low =	<4550 20 1 0 0>;
-				strategy_temp_normal_high =	<4550 20 1 0 0>;
+				strategy_temp_normal_high =	<4550 24 1 0 0>;
 				strategy_temp_warm =		<4130 20 1 0 0>;
 			};
 		};

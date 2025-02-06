@@ -381,6 +381,7 @@
 		oplus,ic_index = <0>;
 		oplus,vooc-version = <VOOC_VERSION_5_0>;
 
+		ovp_reg = <0x36>;
 		ocp_reg = <0xa>;
 		oplus_spec,voocphy_dual_cp_support;
 		oplus_spec,slave_cp_enable_thr = <1400>;		//2000-100mA
@@ -622,6 +623,7 @@
 		status = "okay";
 		compatible = "slave_vphy_sc8547";
 		reg = <0x6F>;
+		ovp_reg = <0x36>;
 
 		oplus_sc8547_slave_cp: oplus,sc8547_slave_cp {
 			oplus,ic_type = <OPLUS_CHG_IC_CP>;

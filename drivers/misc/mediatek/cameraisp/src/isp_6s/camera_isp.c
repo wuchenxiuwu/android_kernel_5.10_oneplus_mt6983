@@ -2741,7 +2741,6 @@ static void ISP_EnableClock(enum ISP_DEV_NODE_ENUM module, bool En)
 		G_u4EnableClockCount[module]++;
 		spin_unlock(&(IspInfo.SpinLockClock));
 		Prepare_Enable_ccf_clock(module); /* !!cannot be used in spinlock!! */
-#if defined(ISP_IRQ_CONTROLLER)
 		LOG_INF("ISP_IRQ_CONTROLLER enable_irq E\n");
 		if (G_u4EnableClockCount[module] == 1) {
 			enable_irq(isp_devs[module].irq);
@@ -2749,7 +2748,6 @@ static void ISP_EnableClock(enum ISP_DEV_NODE_ENUM module, bool En)
 				"enable_irq cam %d\n", module);
 		}
 		LOG_INF("ISP_IRQ_CONTROLLER enable_irq X\n");
-#endif
 #endif
 	} else { /* Disable clock. */
 #if defined(EP_NO_CLKMGR)
@@ -2785,7 +2783,6 @@ static void ISP_EnableClock(enum ISP_DEV_NODE_ENUM module, bool En)
 		G_u4EnableClockCount[module]--;
 		spin_unlock(&(IspInfo.SpinLockClock));
 		/* !!cannot be used in spinlock!! */
-#if defined(ISP_IRQ_CONTROLLER)
 		LOG_INF("ISP_IRQ_CONTROLLER disable_irq E\n");
 		if (G_u4EnableClockCount[module] == 0) {
 			disable_irq(isp_devs[module].irq);
@@ -2793,7 +2790,6 @@ static void ISP_EnableClock(enum ISP_DEV_NODE_ENUM module, bool En)
 				"disable_irq cam %d\n", module);
 		}
 		LOG_INF("ISP_IRQ_CONTROLLER disable_irq X\n");
-#endif
 		Disable_Unprepare_ccf_clock(module);
 #endif
 	}
@@ -6307,6 +6303,7 @@ static int ISP_release(struct inode *pInode, struct file *pFile)
 		 *  Next camera runs in single mode, and it will not update CQ0
 		 */
 		ISP_WR32(CAM_REG_CTL_TWIN_STATUS(i), 0x0);
+		ISP_StopHW(i);
 
 		LOG_INF("dev(%d): Disable all clk, cnt(%d)\n", i, clkcnt);
 		for (j = 0; j < clkcnt; j++)
@@ -6749,6 +6746,9 @@ static int ISP_probe(struct platform_device *pDev)
 
 					return Ret;
 				}
+
+				/* Reset irq ref cnt after request_irq by disable_irq. */
+				disable_irq(isp_devs[dev_idx].irq);
 
 				LOG_INF(
 				"G_u4DevNodeCt=%d, devnode(%s), irq=%d, ISR: %s\n",

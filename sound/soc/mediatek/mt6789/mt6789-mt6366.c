@@ -1368,7 +1368,7 @@ static int mt6789_mt6366_dev_probe(struct platform_device *pdev)
 	scp_audio_node = of_parse_phandle(pdev->dev.of_node,
 					 "mediatek,scp-audio", 0);
 	if (scp_audio_node) {
-		dev_err(&pdev->dev, "got scp audio node\n");
+		dev_info(&pdev->dev, "got scp audio node\n");
 
 		ret = of_property_read_u32(scp_audio_node,
 					   "scp_spk_process_enable",
